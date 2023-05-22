@@ -1,15 +1,16 @@
-import Express from "express";
+import dotenv from "dotenv";
+import { getDb } from "./db.js";
+import app from "./app.js";
+dotenv.config();
+const db = await getDb()
 
-// TODO: Add the .env file
-
-const app = Express();
 
 app.get("/", (req, res) => {
   res.send("Hello World");
+
 })
 
 
-// TODO: Add the port number to the .env file
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
 })
