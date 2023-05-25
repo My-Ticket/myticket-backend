@@ -46,7 +46,7 @@ authController.post("/changePassword", async (req, res, next) => {
     res.send("Password changed");
     console.log("Password updated");
   } else {
-    console.log('Could not update password');
+    console.log("Could not update password");
   }
 });
 

@@ -43,11 +43,14 @@ async function verifyUser(email: string, password: string) {
  * @param cpassword2 <String>
  * @returns <String> A password status message
  */
-async function changePassword(email: string, password: string, cpassword2: string) {
+async function changePassword(
+  email: string,
+  password: string,
+  cpassword2: string
+) {
   try {
     if (password.includes(cpassword2)) {
-      const query = 
-      `
+      const query = `
       UPDATE public.usuarios
       SET password= '${password}'
       WHERE email = '${email}'
