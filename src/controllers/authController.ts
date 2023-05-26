@@ -5,10 +5,10 @@ import User from "../models/User.js";
 
 import token from "jsonwebtoken";
 
-const register = authController.post("/register", async (req, res, next) => {
+authController.post("/register", async (req, res, next) => {
   const { username, email, password } = req.body;
   //password = await User.encryptPassword( password );
-  const newUser = await User.userCreate(username, email, password); //Database response
+  const newUser = await User.createUser(username, email, password);
   const accessToken = token.sign({ email }, process.env.SECRET!, {
     expiresIn: "1440m",
   }); //Access Token

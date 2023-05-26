@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
  * @param password <String>
  * @returns <String[]> Returns a String Array with the information of the account created.
  */
-async function userCreate(name: string, email: string, password: string) {
+async function createUser(name: string, email: string, password: string) {
   try {
     const query =
       "INSERT INTO usuarios (nombre, email, password) VALUES ($1, $2, $3)";
@@ -66,7 +66,7 @@ async function changePassword(
 }
 
 export default {
-  userCreate,
+  createUser,
   verifyUser,
   changePassword,
 };
