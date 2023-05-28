@@ -1,9 +1,7 @@
 import { Router } from "express";
 const authController = Router();
-
-import User from "../models/User.js";
-import bk from "../models/Reserve.js";
 import token from "jsonwebtoken";
+import User from "../models/User.js";
 
 authController.post("/register", async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -50,38 +48,6 @@ authController.post("/changePassword", async (req, res, next) => {
   }
 });
 
-authController.get("/profile", (req, res, next) => {
-  const tokenheader = req.headers["x-access-token"] as string;
-  if (!tokenheader) {
-    return res.status(401).json({
-      auth: false,
-      message: "No token provided",
-    });
-  }
-
-  try {
-    token.verify(tokenheader, process.env.SECRET!);
-    res.json("Dashboard");
-    console.log("decoded");
-  } catch (error) {}
-});
-
-//TODO: Es probable que sea mejor usar como parametro un ID unico para el usuario, primaryKey en la base de datos, cada usuario con un ID de reserva unico, para despues hacer comprobaciones.
-authController.post("/reserve", async (req, res, next) => {
-  const tokenheader = req.headers["x-access-token"] as string;
-  const {title, date, seats} = req.body;
-  if (!tokenheader) {
-    return res.status(401).json({
-      auth:false,
-      message: "No valid token",
-    })
-  }
-    try {
-      const reserve = await bk.booking( title, date, seats);
-    } catch (error) {
-      throw new Error('Reservation could not be made');
-    }
-});
 
 
 export default authController;
