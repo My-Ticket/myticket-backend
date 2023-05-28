@@ -1,16 +1,14 @@
-import bcrypt from "bcrypt";
-
 /**
  * This function is responsible for creating a new user.
- * @param name <String>
- * @param email <String>
- * @param password <String>
+ * @param {String} username
+ * @param {String} email
+ * @param {String} password 
  * @returns <String[]> Returns a String Array with the information of the account created.
  */
 async function createUser(name: string, email: string, password: string) {
   try {
     const query =
-      "INSERT INTO usuarios (nombre, email, password) VALUES ($1, $2, $3)";
+      "INSERT INTO usuarios (name, email, password) VALUES ($1, $2, $3)";
     const values = [name, email, password];
     const result = await db.query(query, values);
     return values.map((value) => console.log(value));
@@ -21,9 +19,9 @@ async function createUser(name: string, email: string, password: string) {
 
 /**
  * This function allows you to check if the user exists
- * @param email <String>
- * @param password <String>
- * @returns <Boolean>
+ * @param {String} email
+ * @param {String} password
+ * @returns {Boolean}
  */
 async function verifyUser(email: string, password: string) {
   try {
@@ -38,18 +36,18 @@ async function verifyUser(email: string, password: string) {
 
 /**
  * This function allows the user to change the password.
- * @param email <String>
- * @param password <String>
- * @param cpassword2 <String>
+ * @param {String} email
+ * @param {String} password
+ * @param {String} newPassword
  * @returns <String> A password status message
  */
 async function changePassword(
   email: string,
   password: string,
-  cpassword2: string
+  newPassword: string
 ) {
   try {
-    if (password.includes(cpassword2)) {
+    if (password.includes(newPassword)) {
       const query = `
       UPDATE public.usuarios
       SET password= '${password}'

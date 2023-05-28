@@ -2,7 +2,7 @@ import { Router } from "express";
 const authController = Router();
 
 import User from "../models/User.js";
-
+import bk from "../models/Reserve.js";
 import token from "jsonwebtoken";
 
 authController.post("/register", async (req, res, next) => {
@@ -11,14 +11,14 @@ authController.post("/register", async (req, res, next) => {
   const newUser = await User.createUser(username, email, password);
   const accessToken = token.sign({ email }, process.env.SECRET!, {
     expiresIn: "1440m",
-  }); //Access Token
+  }); 
   res.json({
     Username: username,
     Email: email,
     password: password,
     Auth: true,
     AccessToken: accessToken,
-  }); //Server response
+  }); 
 });
 
 authController.post("/login", async (req, res, next) => {
@@ -65,5 +65,23 @@ authController.get("/profile", (req, res, next) => {
     console.log("decoded");
   } catch (error) {}
 });
+
+
+authController.get("/reserve", async (req, res, next) => {
+  const tokenheader = req.headers["x-access-token"] as string;
+  const {title, date, seats} = req.body;
+  if (!tokenheader) {
+    return res.status(401).json({
+      auth:false,
+      message: "No valid token",
+    })
+  }
+    try {
+      const reserve = await bk.booking( title, date, seats);
+    } catch (error) {
+      throw new Error('Reservation could not be made');
+    }
+});
+
 
 export default authController;
