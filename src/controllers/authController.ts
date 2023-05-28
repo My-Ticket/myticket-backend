@@ -24,11 +24,11 @@ authController.post("/register", async (req, res, next) => {
 authController.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   console.log(req.body);
-  const user = await User.verifyUser(email, password);
+  const user = await User.userAcces(email, password);
   console.log(user);
   if (user !== undefined) {
     res.send("Welcome");
-    console.log("Usuario encontrado!");
+    console.log("You are logged in to the account");
   } else {
     res
       .status(404)
@@ -66,8 +66,8 @@ authController.get("/profile", (req, res, next) => {
   } catch (error) {}
 });
 
-
-authController.get("/reserve", async (req, res, next) => {
+//TODO: Es probable que sea mejor usar como parametro un ID unico para el usuario, primaryKey en la base de datos, cada usuario con un ID de reserva unico, para despues hacer comprobaciones.
+authController.post("/reserve", async (req, res, next) => {
   const tokenheader = req.headers["x-access-token"] as string;
   const {title, date, seats} = req.body;
   if (!tokenheader) {

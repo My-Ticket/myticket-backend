@@ -17,6 +17,8 @@ export async function booking( title: string, date: Date, seats:[]) {
   }
 }
 
+
+
 export default {
   booking,
 }

@@ -23,7 +23,7 @@ async function createUser(name: string, email: string, password: string) {
  * @param {String} password
  * @returns {Boolean}
  */
-async function verifyUser(email: string, password: string) {
+async function userAcces(email: string, password: string) {
   try {
     const query = `SELECT * FROM usuarios WHERE email='${email}' and password='${password}'`;
     const result = await db.query(query);
@@ -65,6 +65,6 @@ async function changePassword(
 
 export default {
   createUser,
-  verifyUser,
+  userAcces,
   changePassword,
 };
