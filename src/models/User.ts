@@ -1,16 +1,18 @@
+import { pool } from "../db.js";
+
 /**
  * This function is responsible for creating a new user.
  * @param {String} username
  * @param {String} email
- * @param {String} password 
+ * @param {String} password
  * @returns <String[]> Returns a String Array with the information of the account created.
  */
-async function createUser(name: string, email: string, password: string) {
+async function createUser(username: string, email: string, password: string) {
   try {
     const query =
-      "INSERT INTO usuarios (name, email, password) VALUES ($1, $2, $3)";
-    const values = [name, email, password];
-    const result = await db.query(query, values);
+      "INSERT INTO usuarios (username, email, password) VALUES ($1, $2, $3)";
+    const values = [username, email, password];
+    const result = await pool.query(query, values);
     return values.map((value) => console.log(value));
   } catch (err) {
     throw err;
@@ -23,23 +25,37 @@ async function createUser(name: string, email: string, password: string) {
  * @param {String} password
  * @returns {Boolean}
  */
-async function userAcces(email: string, password: string) {
+export async function userAcces(email: string, password: string) {
   try {
     const query = `SELECT * FROM usuarios WHERE email='${email}' and password='${password}'`;
-    const result = await db.query(query);
-    return result.length > 0 ? true : false;
+    const result = await pool.query(query);
+    return result;
   } catch (err) {
-    return undefined;
     throw err;
   }
 }
+
+/**
+ * This function is in charge of verifying if the account exists in the database.
+ * @param {String} email
+ * @param {Boolean} accountstatus
+ */
+export const verifyUser = async (email: string) => {
+  try {
+    const query = `SELECT * FROM usuarios WHERE email='${email}'`;
+    const result = await pool.query(query);
+    return result;
+  } catch (error) {
+    throw new Error("The user already exists");
+  }
+};
 
 /**
  * This function allows the user to change the password.
  * @param {String} email
  * @param {String} password
  * @param {String} newPassword
- * @returns <String> A password status message
+ * @returns {String} A password status message
  */
 async function changePassword(
   email: string,
@@ -53,7 +69,7 @@ async function changePassword(
       SET password= '${password}'
       WHERE email = '${email}'
       `;
-      const result = await db.query(query);
+      const result = await pool.query(query);
       return result;
     } else {
       throw new Error("Invalid password");
@@ -67,4 +83,5 @@ export default {
   createUser,
   userAcces,
   changePassword,
+  verifyUser,
 };

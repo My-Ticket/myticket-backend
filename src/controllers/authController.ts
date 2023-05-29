@@ -1,38 +1,41 @@
 import { Router } from "express";
 const authController = Router();
 import token from "jsonwebtoken";
-import User from "../models/User.js";
+import User, { userAcces, verifyUser } from "../models/User.js";
 
 authController.post("/register", async (req, res, next) => {
   const { username, email, password } = req.body;
-  //password = await User.encryptPassword( password );
-  const newUser = await User.createUser(username, email, password);
   const accessToken = token.sign({ email }, process.env.SECRET!, {
     expiresIn: "1440m",
-  }); 
-  res.json({
-    Username: username,
-    Email: email,
-    password: password,
-    Auth: true,
-    AccessToken: accessToken,
-  }); 
+  });
+  let check = false;
+  const verify = await verifyUser( email ).then(e => e.rowCount > 0 ? check = true : check = false);
+  if ( check ) {
+    res.send( {
+      Auth: false,
+      Message: 'The email you provided has already been used in another account!'
+    } )
+  } else {
+    res.send({
+      Auth: true,
+      Email: email,
+      Username: username,
+      Message: 'Account successfully created!',
+      accessToken: accessToken,
+    })
+    const user = await User.createUser( username, email, password );
+  }
 });
 
 authController.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   console.log(req.body);
-  const user = await User.userAcces(email, password);
-  console.log(user);
-  if (user !== undefined) {
-    res.send("Welcome");
-    console.log("You are logged in to the account");
+  let access = false;
+  const user = await User.userAcces(email, password).then( e => e.rows.length > 0 ? access = true : access);
+  if ( access ) {
+    res.send('Welcome');
   } else {
-    res
-      .status(404)
-      .send(
-        '<img src"https://dinahosting.com/blog/upload/2021/03/error-404.jpg"/>'
-      );
+    res.send('The account does not exist')
   }
 });
 
