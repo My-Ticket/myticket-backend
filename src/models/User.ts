@@ -52,7 +52,7 @@ export async function verifyUser( email: string ) {
  * @param {String} email
  * @param {String} password
  * @param {String} newPassword
- * @returns {String} A password status message
+ * @returns {String}
  */
 export async function changePassword(
   email: string,

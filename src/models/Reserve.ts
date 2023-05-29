@@ -1,22 +1,30 @@
-//TODO: function parameters and other functionalities are yet to be implemented.
-
 /**
- * This function is in charge of booking a movie.
+ * 
  * @param {String} title
- * @param {Date} date
- * @param {Array<Object>} seats
+ * @param {Number} ticket
+ * @param {Array<Object>}
+ * @param {String} userID 
+ * @returns {Array<Object>}
  */
-export async function booking( title: string, date: Date, seats:[]) {
+//TODO: add support for seat object
+export async function booking(
+  userID: string,
+  title: string,
+  ticket: number,
+  seats: []
+) {
   try {
-    const query = `INSERT INTO reserve (title, date, seats) VALUES ($1, $2, $3)`;
-    const values = [title, date, seats];
+    const query = `INSERT INTO public.booking(
+      id, title, tickets, seats)
+      VALUES ($1, $2, $3, ARRAY[$4]::json[]);`;
+    const values = [userID, title, ticket, JSON.stringify(seats)];
     const result = await db.query(query, values);
-    return values.map(value => console.table({value}));
+    return result;
   } catch (error) {
-    throw new Error('Reservation could not be made');
+    throw error;
   }
 }
 
 export default {
   booking,
-}
+};
