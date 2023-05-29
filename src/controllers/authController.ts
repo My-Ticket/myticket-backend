@@ -1,39 +1,36 @@
 import { Router } from "express";
 const authController = Router();
 import token from "jsonwebtoken";
-import User, { userAcces, verifyUser } from "../models/User.js";
+import User, { createUser, userAcces, verifyUser } from "../models/User.js";
 
 authController.post("/register", async (req, res, next) => {
   const { username, email, password } = req.body;
   const accessToken = token.sign({ email }, process.env.SECRET!, {
     expiresIn: "1440m",
   });
-  let check = false;
-  const verify = await verifyUser( email ).then(e => e.rowCount > 0 ? check = true : check = false);
-  if ( check ) {
+  const verify = await verifyUser( email );
+  if ( verify ) {
     res.send( {
-      Auth: false,
-      Message: 'The email you provided has already been used in another account!'
+      Message: 'An account already exists with the email address provided.',
+      Email: email,
     } )
   } else {
     res.send({
-      Auth: true,
+      Message: 'Account successfully created!',
       Email: email,
       Username: username,
-      Message: 'Account successfully created!',
-      accessToken: accessToken,
-    })
-    const user = await User.createUser( username, email, password );
+      AccessToken: accessToken
+    });
+    const user = await createUser( username, email, password );
   }
 });
 
 authController.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   console.log(req.body);
-  let access = false;
-  const user = await User.userAcces(email, password).then( e => e.rows.length > 0 ? access = true : access);
-  if ( access ) {
-    res.send('Welcome');
+  const user = await User.userAcces(email, password);
+  if ( user ) {
+    res.send(`Welcome ${ email }`);
   } else {
     res.send('The account does not exist')
   }
