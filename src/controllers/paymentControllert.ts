@@ -1,6 +1,7 @@
 import { Router } from "express";
 import axios from "axios";
 import dotenv from "dotenv";
+import { paypalToken } from "../config/payment.js";
 dotenv.config();
 const paymentController = Router();
 
@@ -66,6 +67,31 @@ paymentController.get('/capture-order', async (req, res, next) => {
 
 paymentController.get('/cancel-order', (req, res, next) => {
   res.send('Cancelled Order');
+})
+
+paymentController.post('/refund-order', async (req, res, next) => {
+  try {
+    const { transactionId, amount } = req.body;
+   const token = await paypalToken();
+    const response = await axios.post(`${process.env.PAYPAL_HOST}v2/payments/captures/${transactionId}/refund`, 
+    {
+      amount: {
+        value: amount,
+        currency_code: 'USD',
+      },
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    );
+    res.send('Successful reimbursement :)');
+    console.log( response.data );
+  } catch (error) {
+    throw new Error('Refund error :(');
+  }
 })
 
 export default paymentController;
