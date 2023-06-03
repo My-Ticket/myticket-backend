@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
-import { getDb } from "./db.js";
-import app from "./app.js";
 dotenv.config();
-global.db = await getDb();
+
+import { db } from "./db/db.js";
+import app from "./app.js";
+global.db = db;
 
 app.get("/", (req, res) => {
   res.send("Hello World");

@@ -1,5 +1,4 @@
-import pgp from "pg-promise";
-import pg from "pg-promise/typescript/pg-subset.js";
+import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
 declare global {
-  var db: pgp.IConnected<{}, pg.IClient>;
+  var db: PostgresJsDatabase;
 }
