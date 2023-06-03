@@ -61,8 +61,34 @@ paymentController.get('/capture-order', async (req, res, next) => {
     },
   });
   const data = response.data;
+
   console.log(data);
-  return res.json(data);
+
+  const invoice = {
+    merchant_info: {
+      email: 'Myticket@gmail.com',
+      first_name: 'Kahyberth Stiven',
+      last_name: 'Gonzalez Sayas'
+    }, 
+    billing_info: [
+      {
+        email: data.payer.email_address
+      }
+    ],
+    items: [
+      {
+        name: 'Movie Ticket',
+        quantity: 1,
+        unit_price: {
+          currency: 'USD',
+          value: data.purchase_units[0].payments.captures[0].amount.value,
+        }
+      }
+  ],
+  note: 'thank for your purchase :D'
+  }
+  
+  res.json(invoice);
 })
 
 paymentController.get('/cancel-order', (req, res, next) => {
