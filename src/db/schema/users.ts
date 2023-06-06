@@ -28,6 +28,11 @@ export async function getOneUser(id: number): Promise<User> {
   return (await res)[0];
 }
 
+export async function updateUser(id: number, user: User): Promise<User> {
+  const res = db.update(users).set({password: user.password}).where(eq(users.id, id)).returning();
+  return (await res)[0];
+}
+
 type UserQueryOpts = {
   id?: number;
   name?: string;

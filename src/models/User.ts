@@ -1,4 +1,4 @@
-import { insertUser } from "../db/schema/user.js";
+import { insertUser } from "../db/schema/users.js";
 
 /**
  * This function is responsible for creating a new user.

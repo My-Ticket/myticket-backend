@@ -15,11 +15,10 @@ const config = {
 console.log(config);
 const url = `postgres://${config.username}:${config.password}@${config.host}:${config.port}/${config.database}`;
 
-
 const client = postgres(url);
 
 const db = drizzle(client);
 
-await migrate(db, {migrationsFolder: "drizzle"});
+await migrate(db, { migrationsFolder: "drizzle" });
 
 export { db };
