@@ -1,20 +1,19 @@
 import { Request, Response,} from "express";
 import token from "jsonwebtoken";
 export function authMiddleware(req: Request, res: Response, next: any) {
-  const tokenheader = req.headers["x-access-token"] as string;
+  const tokenheader = req.headers["authorization"] as string;
   if (!tokenheader) {
+    console.log(req.headers);
     return res.status(401).json({
-      auth: false,
-      message: "No token provided",
+      error: "No token provided",
     });
   }
   try {
-    token.verify(tokenheader, process.env.SECRET!);
+    token.verify(tokenheader.split(" ")[1], process.env.SECRET!);
     next();
   } catch (error) {
     res.status(401).json({
-      auth: false,
-      message: "Invalid token",
+      error: "Invalid token",
     });
   }
 }

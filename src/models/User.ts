@@ -1,3 +1,5 @@
+import { insertUser } from "../db/schema/users.js";
+
 /**
  * This function is responsible for creating a new user.
  * @param {String} username
@@ -7,11 +9,7 @@
  */
 export async function createUser(username: string, email: string, password: string) {
   try {
-    const query =
-      "INSERT INTO usuarios (username, email, password) VALUES ($1, $2, $3)";
-    const values = [username, email, password];
-    const result = await db.query(query, values);
-    return values.map((value) => console.log(value));
+    await insertUser({ name: username, email: email, password: password }); 
   } catch (err) {
     throw err;
   }
@@ -25,9 +23,10 @@ export async function createUser(username: string, email: string, password: stri
  */
 export async function userAcces(email: string, password: string) {
   try {
-    const query = `SELECT * FROM usuarios WHERE email='${email}' and password='${password}'`;
-    const result = await db.query(query);
-    return result.length > 0 ? true : false;
+    // TODO: Refactor this query
+    // const query = `SELECT * FROM usuarios WHERE email='${email}' and password='${password}'`;
+    // const result = await db.query(query);
+    // return result.length > 0 ? true : false;
   } catch (err) {
     throw err;
   }
@@ -39,9 +38,10 @@ export async function userAcces(email: string, password: string) {
  */
 export async function verifyUser( email: string ) {
   try {
-    const query = `SELECT * FROM usuarios WHERE email='${email}'`;
-    const result = await db.query(query);
-    return result.length > 0 ? true : false;
+    // TODO: Refactor this query
+    // const query = `SELECT * FROM usuarios WHERE email='${email}'`;
+    // const result = await db.query(query);
+    // return result.length > 0 ? true : false;
   } catch (error){
     throw error;
   }
@@ -61,13 +61,14 @@ export async function changePassword(
 ) {
   try {
     if (password.includes(newPassword)) {
-      const query = `
-      UPDATE public.usuarios
-      SET password= '${password}'
-      WHERE email = '${email}'
-      `;
-      const result = await db.query(query);
-      return result;
+      // TODO: Refactor this query
+      // const query = `
+      // UPDATE public.usuarios
+      // SET password= '${password}'
+      // WHERE email = '${email}'
+      // `;
+      // const result = await db.query(query);
+      // return result;
     } else {
       throw new Error("Invalid password");
     }
