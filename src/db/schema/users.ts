@@ -23,7 +23,7 @@ export async function insertUser(user: NewUser): Promise<User> {
   return (await res)[0];
 }
 
-export async function getOneUser(id: number): Promise<User> {
+export async function getUserById(id: number): Promise<User> {
   const res = db.select().from(users).where(eq(users.id, id)).execute();
   return (await res)[0];
 }
