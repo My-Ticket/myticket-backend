@@ -12,7 +12,6 @@ const config = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
 };
-console.log(config);
 const url = `postgres://${config.username}:${config.password}@${config.host}:${config.port}/${config.database}`;
 
 const client = postgres(url);

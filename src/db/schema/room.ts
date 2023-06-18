@@ -7,7 +7,7 @@ export interface RoomStatus {
   atlas: number[][];
 }
 
-const rooms = pgTable("rooms", {
+export const rooms = pgTable("rooms", {
   id: serial("id").primaryKey(),
   name: text("name"),
   room_status: jsonb("room_status").$type<RoomStatus>(), 

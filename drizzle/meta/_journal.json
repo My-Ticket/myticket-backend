@@ -8,6 +8,20 @@
       "when": 1685712894473,
       "tag": "0000_blue_magneto",
       "breakpoints": false
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1687107215338,
+      "tag": "0001_glamorous_famine",
+      "breakpoints": false
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1687107330814,
+      "tag": "0002_colossal_falcon",
+      "breakpoints": false
     }
   ]
 }

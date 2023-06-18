@@ -1363,7 +1363,7 @@ glob@^8.1.0:
     minimatch "^5.0.1"
     once "^1.3.0"
 
-got@^11.8.5:
+got@^11.8.2, got@^11.8.5:
   version "11.8.6"
   resolved "https://registry.npmjs.org/got/-/got-11.8.6.tgz"
   integrity sha512-6tfZ91bOr7bOXnK7PRDCGBLa1H4U080YHNaAQ2KsMGlLEzRbk44nsZF2E1IeRc3vtJHPVbKCYgdFbaGO2ljd8g==
@@ -1815,6 +1815,13 @@ node-fetch@^2.6.7:
   integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
   dependencies:
     whatwg-url "^5.0.0"
+
+node-themoviedb@^0.2.8:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/node-themoviedb/-/node-themoviedb-0.2.8.tgz#0baadde648788a485d5e0f683a791afbfefc646c"
+  integrity sha512-su7sTCaWzFAMEacpBV/ZnylSd1Aok+KNS3FQE+XULaOlHc+IAJANAnaC2r/Sb12DRUTSDVCObaOU5dVLKRn2jA==
+  dependencies:
+    got "^11.8.2"
 
 nodemon@^2.0.22:
   version "2.0.22"

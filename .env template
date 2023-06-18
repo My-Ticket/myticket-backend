@@ -5,3 +5,4 @@ POSTGRES_PASSWORD = "1234"
 POSTGRES_DB = "ticket"
 POSTGRES_HOST = "localhost"
 POSTGRES_PORT = 5432
+TMDB_API_KEY = "api_key"
