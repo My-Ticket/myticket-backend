@@ -8,7 +8,7 @@ import cors from "cors";
 import { Server } from "socket.io";
 import http from "http";
 import { reservationsHandler } from "./socket/reservation.js";
-import billboardController from "./controllers/billboardController.js";
+import moviesController from "./controllers/movieController.js";
 
 const app = express();
 app.use(cors());
@@ -16,7 +16,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/auth" ,authController);
-app.use("/content" ,billboardController);
+app.use("/content" , moviesController);
 app.use(reserveController);
 app.use(paymentController);
 app.use(userController);

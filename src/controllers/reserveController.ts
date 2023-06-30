@@ -5,20 +5,15 @@ import { booking } from "../models/Reserve.js";
 
 const reserveController = Router();
 
+reserveController.use(authMiddleware);
 
 reserveController.post('/booking', async ( req, res, next ) => {
   const { id, title, tickets, seats } = req.body;
-  const tokenheader = req.headers["x-access-token"] as string;
-  if (!tokenheader) {
-    return res.status(401).json({
-      auth: false,
-      message: "No token provided",
-    });
-  }
   try {
     const reserve = await booking( id, title, tickets, seats);
     res.send(reserve)
   } catch ( error ) {
+    // TODO: Handle error, and inform the client
     throw error;
   }
 });

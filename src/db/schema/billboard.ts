@@ -25,6 +25,6 @@ export async function updateBillboard(id: number, billboard: Billboard): Promise
   return (await res)[0];
 }
 
-export async function getAllBillboards(): Promise<Billboard[]> {
+export async function getAllMovies(): Promise<Billboard[]> {
   return await db.select().from(billboards).execute();
 }
