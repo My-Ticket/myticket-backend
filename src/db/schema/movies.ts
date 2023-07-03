@@ -1,16 +1,19 @@
 import { InferModel, eq } from "drizzle-orm";
-import { pgTable, serial, text } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, pgEnum,  } from "drizzle-orm/pg-core";
 
+
+export const movieStatesEnum = pgEnum("movie_states", ["billboard", "upcoming"])
 export const movies = pgTable("movies", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
-  description: text("description"),
-  image: text("image").notNull(),
-  rating: text("rating"),
-  year: text("year"),
+  overview: text("overview"),
+  posterPath: text("poster_path"),
+  backdropPath: text("backdrop_path"),
+  rating: integer("rating").default(0),
   trailer: text("trailer"),
-  flags: text("flags"),
+  flags: movieStatesEnum("movie_states")
 })
+
 
 export type Movie = InferModel<typeof movies>
 export type NewMovie = InferModel<typeof movies, "insert">
@@ -26,7 +29,7 @@ export async function getMovieById(id: number): Promise<Movie> {
 }
 
 export async function updateMovie(id: number, movie: Movie): Promise<Movie> {
-  const res = db.update(movies).set({title: movie.title}).where(eq(movies.id, id)).returning();
+  const res = db.update(movies).set(movie).where(eq(movies.id, id)).returning();
   return (await res)[0];
 }
 
@@ -37,23 +40,13 @@ export async function getAllMovies(): Promise<Movie[]> {
 type MovieQueryOpts = {
   id?: number;
   title?: string;
-  description?: string;
-  image?: string;
-  rating?: string;
-  year?: string;
-  trailer?: string;
-  flags?: string;
+  flags?: "billboard" | "upcoming";
 }
 
 export async function queryMovies(queryOpts: MovieQueryOpts){
-  const query = db.select().from(movies)
-  if (queryOpts.id) query.where(eq(movies.id, queryOpts.id))
-  if (queryOpts.title) query.where(eq(movies.title, queryOpts.title))
-  if (queryOpts.description) query.where(eq(movies.description, queryOpts.description))
-  if (queryOpts.image) query.where(eq(movies.image, queryOpts.image))
-  if (queryOpts.rating) query.where(eq(movies.rating, queryOpts.rating))
-  if (queryOpts.year) query.where(eq(movies.year, queryOpts.year))
-  if (queryOpts.trailer) query.where(eq(movies.trailer, queryOpts.trailer))
-  if (queryOpts.flags) query.where(eq(movies.flags, queryOpts.flags))
+  let query = db.select().from(movies)
+  if (queryOpts.id) query = query.where(eq(movies.id, queryOpts.id))
+  if (queryOpts.title) query =query.where(eq(movies.title, queryOpts.title))
+  if (queryOpts.flags) query = query.where(eq(movies.flags, queryOpts.flags))
   return await query.execute();
 }

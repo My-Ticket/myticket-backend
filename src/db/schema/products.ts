@@ -1,7 +1,7 @@
 import { pgTable, serial, text } from "drizzle-orm/pg-core";
 import { InferModel, eq } from "drizzle-orm";
 export const products = pgTable("products", {
-  id: text("id").primaryKey(),
+   id:text("id").primaryKey(),
   name: text("name").notNull(),
   status: text("status").notNull(),
 })

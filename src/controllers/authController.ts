@@ -32,6 +32,7 @@ authController.post("/register", async (req, res, next) => {
     return;
   }
   try {
+    
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log(await insertUser({ name, email, password: hashedPassword, admin: false }));
     res.send({
@@ -94,7 +95,7 @@ const changePasswordValidator = z.object({
 authController.use(authMiddleware);
 
 authController.post("/changePassword", async (req, res, next) => {
-  const { email, password, newPassword } = req.body;
+  const { email, password, newPassword } = req.body as any;
   const isValid = changePasswordValidator.parse({
     email: email,
     password: password,
