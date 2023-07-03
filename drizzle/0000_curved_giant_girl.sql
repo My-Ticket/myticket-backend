@@ -22,9 +22,9 @@ CREATE TABLE IF NOT EXISTS "movies" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"overview" text,
-	"poster_path" text NOT NULL,
+	"poster_path" text,
 	"backdrop_path" text,
-	"rating" integer,
+	"rating" integer DEFAULT 0,
 	"trailer" text,
 	"movie_states" movie_states
 );

@@ -33,7 +33,7 @@ authController.post("/register", async (req, res, next) => {
   }
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(await insertUser({ name, email, password: hashedPassword }));
+    console.log(await insertUser({ name, email, password: hashedPassword, admin: false }));
     res.send({
       email: email,
     });

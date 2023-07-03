@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "45e56c17-edbc-43f1-afe1-3d905f7fbd27",
+  "id": "dae85614-5d9e-4663-8ef7-f2c7f1648fad",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "admins": {
@@ -96,7 +96,7 @@
           "name": "poster_path",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "backdrop_path": {
           "name": "backdrop_path",
@@ -108,7 +108,8 @@
           "name": "rating",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": 0
         },
         "trailer": {
           "name": "trailer",
