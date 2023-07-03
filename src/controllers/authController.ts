@@ -54,8 +54,8 @@ authController.post("/login", async (req, res, next) => {
     });
     return;
   }
-
   try {
+    const user = users[0]
     const isValid = await bcrypt.compare(password, users[0].password!);
     if (!isValid) {
       res.status(400).send({
@@ -65,7 +65,7 @@ authController.post("/login", async (req, res, next) => {
     }
     token.sign(
       // TODO: implement token expiration
-      { email },
+      { email: user.email, id: user.id },
       process.env.SECRET!,
       {
         expiresIn: "1440m",

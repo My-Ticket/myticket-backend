@@ -1,11 +1,12 @@
 import { InferModel, eq } from "drizzle-orm";
-import { pgTable, serial, text } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, boolean } from "drizzle-orm/pg-core";
 import { z } from "zod"
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  name: text("name"),
-  email: text("email"),
-  password: text("password"),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  password: text("password").notNull(),
+  admin: boolean("admin").notNull()
 });
 
 export const userValidator = z.object({
