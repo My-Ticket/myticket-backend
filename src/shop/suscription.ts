@@ -19,7 +19,7 @@ export async function subscription ( plan_id: string ) {
             },
             email_address: "customer@example.com",
         },
-        return_url: 'http://localhost:5000/gracias',
+        return_url: 'http://localhost:5000/',
         cancel_url: 'http://localhost:5000/'
       })
     });
