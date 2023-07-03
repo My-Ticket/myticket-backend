@@ -1,6 +1,6 @@
 import { Request, Response,} from "express";
 import token from "jsonwebtoken";
-export function authMiddleware(req: Request, res: Response, next: any) {
+export function authMiddleware(req: Request, res: Response, next: Function) {
   const tokenheader = req.headers["authorization"];
   if (!tokenheader) {
     console.log(req.headers);
