@@ -6,9 +6,11 @@ import { capturePayment } from "../shop/capture.js";
 import { subscription } from "../shop/suscription.js";
 import { getTokenPayload } from "../util/getTokenPayload.js";
 import { authMiddleware } from "../middleware/auth.js";
+import { insertProduct } from "../db/schema/products.js";
+import { insertPayment } from "../db/schema/payment.js";
 const paymentController = Router();
 
-paymentController.use(authMiddleware);
+
 
 paymentController.get('/create-order', async (req, res) => {
   const tk = getTokenPayload(req);
@@ -31,10 +33,26 @@ paymentController.get('/create-order', async (req, res) => {
 
 
 paymentController.get('/capture-order', async (req, res) => {
+    const tk = getTokenPayload(req);
     const token = req.query.token;
-    //const token = req.body;
     const capture = await capturePayment(`${token}`);
-    res.json(capture);
+    const { status, value } = capture;
+    if (typeof tk === 'string') {
+      // El token no es válido
+      console.log('Token inválido');
+      res.status(401).json({ error: 'Invalid token' });
+      return;
+    }
+    if (tk!) {
+      console.log("Datos: ", tk);
+      console.log("DATOS DE LA CAPTURA: ", capture);
+      const { id } = tk;
+      const $payment = insertPayment({user_id:id,status,amount:capture.purchase_units[0].payments.captures[0].amount.value, pay_id: capture.id});
+      res.send($payment);
+    } else {
+      console.log("Token no válido");
+      res.status(401).json({ error: "Invalid token" });
+    }
 });
 
 paymentController.post('/create-product', async (req, res) => {
@@ -51,7 +69,8 @@ paymentController.post('/create-plan', async (req, res) => {
 paymentController.post('/create-subscription', async (req, res) => {
   const { plan_id } = req.body;
   const dato = await subscription( plan_id );
-  res.json(dato);
+  const { id, status, create_time } = dato;
+  res.send(dato)
 });
 
 export default paymentController;
